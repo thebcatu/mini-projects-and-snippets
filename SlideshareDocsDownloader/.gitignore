@@ -1,0 +1,25 @@
+# Ignore virtual environment directory
+myenv/
+
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore OS-specific files (macOS and Windows)
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor-specific files
+.vscode/
+.idea/
+
+# Ignore environment configuration
+.env
+
+# Ignore logs or temporary files
+*.log
+
+# Ignore downloaded images or output files if not needed in repo
+downloaded_images/
+downloads/
