@@ -3,24 +3,11 @@ import requests
 from bs4 import BeautifulSoup
 
 def download_images_from_html(html_path, save_path="images"):
-    """
-    Extracts and downloads high-quality images from the provided HTML file.
-
-    Args:
-        html_path (str): Path to the saved HTML file.
-        save_path (str): Directory to save downloaded images.
-
-    Returns:
-        None
-    """
-    # Create the save directory if it does not exist
     os.makedirs(save_path, exist_ok=True)
 
-    # Open and parse the HTML file
     with open(html_path, "r", encoding="utf-8") as file:
         soup = BeautifulSoup(file, "html.parser")
 
-    # Find all image tags
     images = soup.find_all("img")
     if not images:
         print("No images found in the HTML file.")
@@ -29,12 +16,10 @@ def download_images_from_html(html_path, save_path="images"):
     print(f"Found {len(images)} images. Downloading...")
 
     for idx, img in enumerate(images, start=1):
-        # Extract the high-resolution image URL from the srcset attribute (if available)
         srcset = img.get("srcset")
         if srcset:
-            # Choose the largest image in the srcset
             urls = [entry.split(" ")[0] for entry in srcset.split(",")]
-            img_url = urls[-1]  # The last entry is usually the highest resolution
+            img_url = urls[-1]
         else:
             img_url = img.get("src")
 
@@ -42,11 +27,10 @@ def download_images_from_html(html_path, save_path="images"):
             print(f"Image {idx} has no valid URL.")
             continue
 
-        # Download the image
         try:
             response = requests.get(img_url, stream=True)
             if response.status_code == 200:
-                img_ext = os.path.splitext(img_url)[-1].split("?")[0]  # Handle URLs with query params
+                img_ext = os.path.splitext(img_url)[-1].split("?")[0]
                 img_name = f"slide_{idx:03}{img_ext}"
                 img_path = os.path.join(save_path, img_name)
 
